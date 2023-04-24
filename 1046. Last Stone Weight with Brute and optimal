@@ -30,3 +30,33 @@ public:
 };
 
 //opimal is using max Heap
+
+class Solution {
+public:
+//optimal solution using priority queue
+    int lastStoneWeight(vector<int>& stones) {
+        priority_queue<int>pq;
+        for(int i:stones) pq.push(i);
+        //we need at least 2 stone sto smash together so our heap as at east 2 stones inside 
+        while(pq.size()>=2){
+            int y=pq.top(); pq.pop();
+            int x=pq.top(); pq.pop();
+
+            //if stone not same
+            if(x!=y) pq.push(y-x);
+        }
+        //if there are no stomes left , return 0
+        if(pq.size()==0) return 0;
+        return pq.top();
+//The worst-case time complexity of the given solution is O(n log n), 
+// where n is the number of stones in the input vector stones. This is because we insert all n stones into a priority queue,
+// and each insertion takes O(log n) time in the worst case. We then perform n-1 iterations of the while loop, 
+// and each iteration takes O(log n) time because we perform one or two pop() operations and 
+// one push() operation on the priority queue, each of which takes O(log n) time in the worst case.
+
+// The worst-case space complexity of the solution is O(n) because we store all n stones in the priority queue.
+//In addition, the size of the priority queue can never exceed n, even during the execution of the algorithm, so the space complexity is O(n).
+
+        
+    }
+};
