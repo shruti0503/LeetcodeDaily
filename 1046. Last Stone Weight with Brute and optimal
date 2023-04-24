@@ -1,0 +1,32 @@
+class Solution {
+public:
+// The time complexity of the given solution is O(n^2 log n) because the for loop in the solution iterates over the input vector stones n times, and within each iteration of the loop, there is a sort() function call that has a time complexity of O(n log n), resulting in a total time complexity of O(n^2 log n).
+    int lastStoneWeight(vector<int>& stones) {
+        sort(stones.begin(),stones.end());
+        int n=stones.size();
+        if(n==1) return stones[0];
+        for(int i=n-1;i>=0;i--){
+            int max1=stones[i];
+            int max2=(i>0)?stones[i-1]:0;
+            if(max1==max2){
+                if(stones.size() >= 2) {
+                    stones.pop_back();
+                    stones.pop_back();
+                } stones.push_back(0);
+            }
+            else if(max1!=max2){
+                int diff=max1-max2;
+                if(stones.size() >= 2) {
+                    stones.pop_back();
+                    stones.pop_back();
+                }
+                stones.push_back(diff);
+            }
+            sort(stones.begin(),stones.end());
+            if (stones.size() == 1) return stones[0];
+        }
+        return 0;
+    }
+};
+
+//opimal is using max Heap
