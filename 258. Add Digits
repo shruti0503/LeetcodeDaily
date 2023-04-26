@@ -1,0 +1,48 @@
+//brute force
+//The outer while loop keeps running until the value of num is less than or equal to 9. 
+//Inside the while loop, we calculate the sum of digits of num by extracting each digit using the modulus operator % and dividing num by 10.
+//We add the extracted digit to a variable sum and keep dividing num by 10 until num becomes 0.
+
+//The time complexity of this approach is O(log n), where n is the value of num. 
+//In the worst case, we may need to add the digits of num log(n) times until we get a single digit. 
+//This is less efficient than the O(1) solution we discussed earlier.
+
+class Solution {
+public:
+    int addDigits(int num) {
+        while (num > 9) {
+            int sum = 0;
+            while (num > 0) {
+                sum += num % 10;
+                num /= 10;
+            }
+            num = sum;
+        }
+        return num;
+    }
+};
+
+//optimised:O(1)
+//The solution we are discussing here is an O(1) solution to the "Add Digits" problem. 
+//This solution is based on the mathematical properties of digital roots.
+
+//First, let's understand what a digital root is. A digital root is the recursive sum of the digits of a number.
+//For example, the digital root of 38 is 2, because 3 + 8 = 11, and 1 + 1 = 2.
+
+ int addDigits(int num) {
+        if (num == 0) {
+            return 0;
+        }
+        return 1 + (num - 1) % 9;
+    }
+    
+//NOTE:
+//Using the formula return num % 9; to find the digital root of a number num is a common mistake. 
+//Although this formula gives the correct answer for many cases, it does not always give the correct answer.
+
+//To understand why this formula is incorrect for some cases, consider the number 9. 
+//The digital root of 9 is 9, but using the formula return num % 9;, we get 0 as the result. 
+//Similarly, for the number 18, the correct digital root is 9, but using the formula return num % 9;, we get 0 as the result.
+
+//The correct formula to find the digital root of a number using the remainder operator is given as return 1 + (num - 1) % 9;. 
+//This formula works for all numbers except 0, for which the digital root is 0.
