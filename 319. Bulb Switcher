@@ -1,4 +1,27 @@
 //BRUTE FORCE
+//For example, for bulb number 12, its state is changed during the 1st, 2nd, 3rd, 4th, 6th, and 12th rounds. 
+//If we denote the state of bulb i after n rounds as 1 if it is on and 0 if it is off, we can express the state of bulb i as follows:
+
+//state(i) = (number of factors of i <= n) % 2
+//We can find the number of factors of i by iterating from 1 to sqrt(i) and incrementing the count by 2 if i is divisible by the current number (because factors come in pairs).
+//With this formula, we can calculate the state of each bulb after n rounds and count the number of bulbs that are on (i.e., have a state of 1).
+//The time complexity of this solution is O(n sqrt(n)), which is not very efficient for large values of n. 
+//However, since the input size is limited to 10^9 in this problem, this solution should be sufficient.
+
+// This solution works by iterating over all bulbs from 1 to n, and for each bulb, it counts the number of factors it has. 
+
+// If the number of factors is odd, then the bulb is on after n rounds, so the count is incremented.
+
+// To count the factors of a bulb i, the solution uses another loop that goes from 1 to the square root of i, and checks if i is divisible by j.
+//  If i is divisible by j, then i/j is also a factor of i, so the count is incremented by 2.
+//   However, if i is a perfect square, then i/j will be equal to j for one of the values of j, so the count is only incremented by 1 in this case.
+
+// Finally, after all bulbs have been checked, the count of bulbs that are on after n rounds is returned.
+
+// The time complexity of this solution is O(n*sqrt(n)), because it iterates over n bulbs, and for each bulb, it checks all numbers up to the square root of i to count its factors.
+// This solution can be optimized by noticing that a bulb i is only toggled by rounds whose index is a factor of i, 
+// so we can iterate over the rounds and their multiples instead of the bulbs and their factors. 
+// This reduces the time complexity to O(sqrt(n)), as explained in an earlier solution.
 
 class Solution {
 public:
@@ -21,3 +44,6 @@ public:
         return count;
     }
 };
+
+//BETTER SOLUTION
+
