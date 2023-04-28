@@ -1,0 +1,59 @@
+class Solution {
+public:
+// words are in similar groups if we can get the same word like the other
+        // after swapping any two char
+        // like  tars rats arts from one connecteed group
+        // but not star
+        // for instance in a grap of a single componenet we can go to any node through 
+        // one node (in an undirected graph).
+        // find number of groups
+
+
+        // we will build connections (find numbe rof connected componenets)
+        // neighbour is any of the node that is similar to to it
+        // and similarity is defined by " words are in similar groups
+        // if we can get the    same word like the other
+        // after swapping any two char"
+
+        // so we will keep on going to each and every neighbour by bfs aur dfs
+
+        //DFS TRAVERSAL 
+        //for a dfs traversal we need 1. vis array , 2. str 3. int i
+        //standard dfs traversal
+        void dfs(int i, vector<string>& strs,vector<bool>&vis){
+            vis[i]=true;
+            //for every node we are going to its every neighbour
+            for(int j=0;j<strs.size();j++){
+                if(vis[j]) continue;
+                if(is_similar(strs[i],strs[j])){
+                    //if they are similar continuing the dfs traversal
+                    dfs(j,strs,vis);
+                }
+            }
+        }
+        bool is_similar(string a, string b){
+            int count=0;
+            for(int i=0;i<a.length();i++){
+                if(a[i]!=b[i]) count++;
+
+            }
+            return(count==2 || count==0);
+        }
+    int numSimilarGroups(vector<string>& strs) {
+        int groups=0;
+       int n=strs.size();
+        vector<bool> vis(n,false);
+        //for connected componenets
+        for(int i=0;i<strs.size();i++){ //going to every node
+            if(vis[i]) continue;
+            groups++; 
+            dfs(i,strs,vis); //doing complete dfs traversal of that component to mark it as visited
+        }
+        return groups++;
+
+        
+    }
+
+    //TC: O(n*n * m) n*n from one node going to every other node m=to check similarity
+    //SC O(n*m) n strings to go in recursive tcak each of size M.
+};
