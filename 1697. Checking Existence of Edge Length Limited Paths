@@ -1,0 +1,69 @@
+class Solution {
+public:
+// In the given example, the input graph has 3 nodes and the edges are [(0, 1, 2), (1, 2, 4), (2, 0, 8), (1, 0, 16)].
+//  The first query is (0, 1, 2), 
+//  which asks whether there is a path between nodes 0 and 1 such that
+//   every edge on the path has a distance strictly less than 2. 
+//  Since there is no such path, the answer for this query is false. 
+//  The second query is (0, 2, 5), which asks whether there is a path between nodes 0 and 2 such that every edge on the path has a distance strictly less than 5. 
+//  In this case, there is a path (0 -> 1 -> 2) with two edges with distances less than 5, so the answer for this query is true.
+
+
+// First, we can create an adjacency list to represent the graph. 
+// Then, for each query, we can run Dijkstra's algorithm starting from the source node and stopping as soon as we reach the target node
+// or if we have reached a node whose shortest path distance exceeds the distance limit.
+// If we reach the target node before exceeding the distance limit, 
+// then there exists a path between the source and target nodes with all edges having distances less than the given limit.
+
+    
+The time complexity of the distanceLimitedPathsExist function is O(Q * (E + N * log N)), where Q is the number of queries, E is the number of edges, and N is the number of nodes. This is because for each query, we perform a shortest path search using Dijkstra's algorithm, which has a time complexity of O(E + N * log N) in the worst case. Therefore, the total time complexity is O(Q * (E + N * log N)).
+
+The space complexity of the function is O(E + N + Q), where E is the number of edges, N is the number of nodes, and Q is the number of queries. This is because we create an adjacency list representation of the graph, which requires O(E) space, and a vector to store the results, which requires O(Q) space. The Dijkstra's algorithm also requires a priority queue, which can store at most N elements, so it requires O(N) space. Therefore, the total space complexity is O(E + N + Q).
+
+    vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) {
+        vector<vector<pair<int, int>>> graph(n);
+        for (const auto& edge : edgeList) {
+            int u = edge[0], v = edge[1], w = edge[2];
+            graph[u].push_back({v, w});
+            graph[v].push_back({u, w});
+        }
+        
+        vector<bool> results;
+        for (const auto& query : queries) {
+            int p = query[0], q = query[1], limit = query[2];
+            results.push_back(hasPath(graph, p, q, limit));
+        }
+        
+        return results;
+    }
+    
+private:
+    bool hasPath(const vector<vector<pair<int, int>>>& graph, int src, int dest, int limit) {
+        vector<int> dist(graph.size(), numeric_limits<int>::max());
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push({0, src});
+        dist[src] = 0;
+        
+        while (!pq.empty()) {
+            int u = pq.top().second;
+            pq.pop();
+            if (u == dest) {
+                return true;
+            }
+            for (const auto& neighbor : graph[u]) {
+                int v = neighbor.first, w = neighbor.second;
+                if (w >= limit) {
+                    continue;
+                }
+                if (dist[v] > dist[u] + w) {
+                    dist[v] = dist[u] + w;
+                    pq.push({dist[v], v});
+                }
+            }
+        }
+        
+        return false;
+    }
+
+
+};
