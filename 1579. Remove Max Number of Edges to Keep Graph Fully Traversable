@@ -1,0 +1,91 @@
+The given code is a C++ solution to the "Remove Max Number of Edges to Keep Graph Fully Traversable" problem on LeetCode. 
+
+The solution uses the Union-Find algorithm to keep track of the connected components in the graph and detect cycles.
+The code first processes all the Type 3 edges, which can be added without any restrictions, and then processes the Type 1 and Type 2 edges separately. 
+
+The `findParent` function finds the parent of a node in the Union-Find data structure,
+while the `merge` function performs the union operation and updates the rank of the parent nodes. The `solve` function processes the edges of a given type,
+and updates the component count and the number of unused edges.
+
+The `maxNumEdgesToRemove` function initializes the Union-Find data structure,
+and calls the `solve` function for each type of edges. It then checks if the graph is fully traversable, and returns the number of unused edges.
+
+Overall, the solution has a time complexity of O(E log V), where E is the number of edges and V is the number of nodes in the graph. 
+The space complexity is O(N), where N is the number of nodes in the graph.
+
+/*
+Link to the " Remove Max Number of Edges to Keep Graph Fully Traversable " Problem ==>>  https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/ 
+   
+Link to the complete Explaination Video ==>> https://youtu.be/NCsZGe6YpgU
+
+*/
+
+class Solution {
+public:
+    int notUsed = 0;
+    int findParent(vector<int>&parent, int node)
+    {
+        if (parent[node] == node) return node;
+        else return findParent(parent, parent[node]);
+    }
+    bool merge(vector<int>&parent, vector<int>&rank, int node1, int node2)
+    {
+        int parent1 = findParent(parent, node1);
+        int parent2 = findParent(parent, node2);
+
+        if (parent1 == parent2) 
+            return false;
+            
+        else
+        {
+            if (rank[parent1] == rank[parent2]){
+                parent[parent1] = parent2; 
+                rank[parent2]++; 
+            }
+            else if (rank[parent1] < rank[parent2])
+                parent[parent1] = parent2; 
+            else
+                parent[parent2] = parent1;
+            return true;
+        }
+    }
+
+    void solve(vector<vector<int>>&edges, vector<int>&parent, vector<int>&rank, int& componentCount, int currType){
+        
+        for (vector<int>&edge : edges){
+
+            if (edge[0] != currType) 
+                continue;      
+              
+            bool merged = merge(parent, rank, edge[1], edge[2]);
+            if (!merged) notUsed++;
+            else componentCount--;
+        }
+    }
+
+    int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) 
+    {
+
+        int componentCount = n;
+
+        vector<int>parent(n + 1);
+        vector<int>rank(n + 1, 0);
+
+        for (int i = 1; i <= n; i++) 
+            parent[i] = i;
+
+        solve(edges, parent, rank, componentCount, 3);
+        
+        vector<int>aliceParent = parent, aliceRank = rank;
+        int aliceComponentCount = componentCount;
+        solve(edges, aliceParent, aliceRank, aliceComponentCount, 1);
+        if (aliceComponentCount != 1) 
+            return -1;  
+        vector<int>bobParent = parent, bobRank = rank; 
+        int bobComponentCount = componentCount;
+        solve(edges, bobParent, bobRank, bobComponentCount, 2);
+        if (bobComponentCount != 1) 
+            return -1; 
+        return notUsed;
+    }
+};
