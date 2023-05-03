@@ -1,0 +1,24 @@
+// the brute force approach to this question would be to iterate for each no in num1 in num2
+// that is we check is 1 is prenet in num2 if it is present then we will move to next index of num1 ans 
+// if it is not presnnt then we will push it in our ans vector ... which will be further pushed in vector of vectors
+// the time comp - O(n*m) as for every element we are chcing in the other
+// n is the length of num1 and m is the length of num2
+
+//optimised 
+//put in hashset and check for count
+vector<vector<int>> findDifference(vector<int>& nums1, vector<int>& nums2) {       
+        unordered_set<int> s1(nums1.begin(), nums1.end());
+        unordered_set<int> s2(nums2.begin(), nums2.end());
+        
+        vector<int> v1, v2;
+        for(auto num: s1)
+            if(!s2.count(num))
+                v1.push_back(num);
+        
+        for(auto num: s2)
+            if(!s1.count(num))
+                v2.push_back(num);
+        
+        return {v1, v2};
+        
+    }
