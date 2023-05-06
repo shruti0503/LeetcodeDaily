@@ -1,5 +1,9 @@
 class Solution {
 public:
+
+The time complexity of this approach is
+O(n*k) since we need to consider every substring of length k in the given string s. 
+The space complexity is O(1) since we are using constant extra space.
     int maxVowels(string s, int k) {
          int n = s.length();
         int max_vowels = 0;
@@ -16,3 +20,16 @@ public:
         
     }
 };
+
+Sure, here's a dry run of the brute-force approach on the input string `s = "aeiou"` and `k = 2`:
+
+1. Initialize `n` to the length of the string `s`, which is 5.
+2. Initialize `max_vowels` to 0.
+3. For `i = 0`, check the substring of length `k = 2` starting from index `i` which is "ae". Count the number of vowels in this substring which is 2. Update `max_vowels` to 2.
+4. For `i = 1`, check the substring of length `k = 2` starting from index `i` which is "ei". Count the number of vowels in this substring which is 2. Since `vowel_count` is not greater than `max_vowels`, there is no update to `max_vowels`.
+5. For `i = 2`, check the substring of length `k = 2` starting from index `i` which is "io". Count the number of vowels in this substring which is 2. Since `vowel_count` is not greater than `max_vowels`, there is no update to `max_vowels`.
+6. Return `max_vowels` which is 2.
+
+Therefore, the function returns 2 as the maximum number of vowels in any substring of length 2 in the given string `s`.
+
+
