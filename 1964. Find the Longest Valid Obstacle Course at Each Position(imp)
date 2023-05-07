@@ -1,0 +1,68 @@
+
+BRUTE FORCEE
+It uses a simple nested loop to compare each element with the previous ones and find the longest valid obstacle course at each position.
+
+The time complexity of this solution is O(n^2) because it requires a nested loop to check all the previous elements for each element in the input array.
+RESULT : TLE
+
+class Solution {
+public:
+   vector<int> longestObstacleCourseAtEachPosition(vector<int>& nums) {
+       int n = nums.size();
+       vector <int> dp(n,1);
+       
+       for(int i = 1;i<n;i++)
+       {
+           for(int j =0;j<i;j++)
+           {
+               if(nums[j] <= nums[i])
+                   dp[i] = max(dp[i],dp[j]+1);
+           }
+       }
+       return dp;
+   }
+};
+
+
+
+
+
+
+Here, we maintain a separate vector lis to store the LIS sequence.
+ We also use another vector lisLen to store the length of the LIS ending at each position.
+
+For each obstacle val, we check if it can be added to the end of the current LIS sequence.
+If so, we add it to lis and update lisLen[i] to be the size of lis. 
+Otherwise, we find the position in lis where val can be inserted using upper_bound 
+(which returns an iterator to the first element greater than val),
+replace that element with val, and update lisLen[i] to be the position where val was inserted plus one.
+
+Finally, we return lisLen, which contains the length of the LIS ending at each position.
+
+This implementation has the same time complexity as the previous implementation,
+which is O(n log n) due to the use of upper_bound. However, it uses more space as it maintains an additional vector lis.
+
+
+class Solution {
+public:
+    vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
+        //to store the osbstacles in non-decresaing order
+        vector<int> lis;
+        vector<int>lisLen(obstacles.size());
+        for(int i=0;i<obstacles.size();i++){
+            int val=obstacles[i];
+            if(lis.size()==0||lis.back()<=val){
+                lis.push_back(obstacles[i]);
+                lisLen[i]=lis.size();
+            }
+            else{
+                int idx=upper_bound(lis.begin(),lis.end(),val)-lis.begin();
+                lis[idx]=val;
+                lisLen[i]=idx+1;
+
+            }
+           
+        }
+         return lisLen;
+    }
+};
