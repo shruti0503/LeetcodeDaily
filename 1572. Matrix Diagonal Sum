@@ -1,1 +1,20 @@
-
+class Solution {
+public:
+// a diaginal elment is located at mat[i][i] & mat[i][mat.size()-1-i]
+// so we can sinmly add them to the sum
+    int diagonalSum(vector<vector<int>>& mat) {
+        int sum = 0;
+        for (int i = 0; i < mat.size(); i++) {
+            sum += mat[i][i]; // Add main diagonal element
+            sum += mat[i][mat.size()-1-i]; // Add opposite diagonal element
+        }
+// but is we have a matrix say 4X4 then there are no center elemnt so not elment will be added twice
+// but if we have odd number of rows and cols then there is a center elemt at the position mat.size()/2 so we can
+// subtract it from the sum as it will be calculated twice.
+        if (mat.size() % 2 == 1) {
+            // If matrix has odd number of rows and columns, subtract the center element once
+            sum -= mat[mat.size()/2][mat.size()/2];
+        }
+        return sum;
+    }
+};
