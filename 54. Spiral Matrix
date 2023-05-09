@@ -1,2 +1,59 @@
 Given an m x n matrix, return all elements of the matrix in spiral order.
 
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+       // row size 
+       int n = matrix.size();
+       vector<int> res;
+       int m = matrix[0].size(); //col size
+       
+       //if matrix is empty return the matrix
+       if(matrix.empty()) return res;
+       
+       // top-> points to the top ; it goes from top to bottom by top++
+       // bottom->points to the last row and goes from bottom to top by bottom++
+       // left->points to the 0 of row pos initially and goes from left to right by left++
+       // right-> points to the rightmost (last) column of the matrix
+       int top = 0, left = 0;
+       int right = m - 1, bottom = n - 1;
+       
+       while(top <= bottom && left <= right) {
+           // print the first row
+           for(int i = left; i <= right; i++) {
+               res.push_back(matrix[top][i]);
+           }
+           
+           // move the top to the next row
+           top++;
+           
+           // print the last col
+           for(int i = top; i <= bottom && left <= right; i++) {
+               res.push_back(matrix[i][right]); //as we are moving down the row is changing but the column remains same
+// which checks if the left pointer is less than or equal to the right pointer before printing the last column. 
+// This is because after printing the last column, the right pointer is decremented by 1. 
+// If we do not check for this condition, we might end up printing the last column again.
+           }
+           
+           // as we have print the last col; decrement the right pointer
+           right--;
+           
+           // print the bottom row
+           if(top <= bottom) {
+               for(int i = right; i >= left && top <= bottom; i--) {
+                   res.push_back(matrix[bottom][i]);
+               }
+               bottom--;
+           }
+           
+           if(left <= right) {
+               for(int i = bottom; i >= top && left <= right; i--) {
+                   res.push_back(matrix[i][left]);
+               }
+               left++;
+           }
+       }
+       
+       return res;
+    }
+};
