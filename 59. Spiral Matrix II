@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> ans(n, vector<int>(n, 0)); // Initialize a matrix of size n x n with all elements as 0
+        int num = 1;
+        int top = 0, left = 0;
+        int bottom = n - 1, right = n - 1;
+        
+        while (top <= bottom && left <= right) {
+            // Fill in the top row
+            for (int i = left; i <= right; i++) {
+                ans[top][i] = num++;
+            }
+            top++;
+            
+            // Fill in the right column
+            for (int i = top; i <= bottom; i++) {
+                ans[i][right] = num++;
+            }
+            right--;
+            
+            // Fill in the bottom row
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    ans[bottom][i] = num++;
+                }
+                bottom--;
+            }
+            
+            // Fill in the left column
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    ans[i][left] = num++;
+                }
+                left++;
+            }
+        }
+        
+        return ans;
+    }
+};
