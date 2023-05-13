@@ -1,0 +1,39 @@
+class Solution {
+public:
+int mod=1e9+7;
+int solve(int targetLength,int one,int zero,vector<int> &dp){
+    if(targetLength==0) return 1;
+    if(targetLength<0) return 0;
+    if(dp[targetLength]!=-1) return dp[targetLength];
+    long long sum;
+    sum=solve(targetLength-one,one,zero,dp)+solve(targetLength-zero,one,zero,dp);
+    return dp[targetLength]=sum%mod;
+}
+    int countGoodStrings(int low, int high, int zero, int one) {
+        int ans=0; //storing the sum
+        vector<int> dp(high+1,-1); //to store the computations
+        for(int i=low;i<=high;i++){
+            ans=((ans%mod)+solve(i,one,zero,dp))%mod;
+        }
+        return ans;
+    }
+};
+
+
+It initializes ans as 0, which will store the final count of good strings.
+
+It creates a vector dp of size high+1 and initializes all elements as -1. This vector is used for memoization.
+
+It iterates from low to high and calls the solve function for each i in the range. The result is added to ans using modular arithmetic.
+
+Finally, the function returns ans, which represents the count of good strings within the given range.
+
+              solve(3, 1, 1)
+             /               \
+    solve(2, 1, 1)        solve(2, 1, 1)
+      /         \           /          \
+solve(1, 1, 1) solve(1, 1, 1) solve(1, 1, 1) solve(1, 1, 1)
+    /   \       /   \       /   \       /   \
+   1     1     1     1     1     1     1     1
+Starting from the root node, each node is the sum of its left and right children.
+The tree shows the progression of recursive calls and the accumulation of the sum.
