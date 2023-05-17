@@ -1,1 +1,77 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 
+class Solution {
+public:
+// one brute force app would be to push all them in a vector
+// and follow the two pointer aproach 
+// and update the sum TC: O(N+N) SC:O(N)
+
+    int pairSum(ListNode* head) {
+        ListNode* node=head;
+        vector<int> vals;
+       //pushing all the values in the vector array
+        while(node){
+            vals.push_back(node->val);
+            node=node->next;
+        }
+        int i=0,j=vals.size()-1; int maxSum=0;
+        while(i<j){
+            maxSum=max(maxSum,vals[i]+vals[j]);
+            i++;
+            j--;
+        }
+        return maxSum;
+        
+    }
+};
+************************************
+class Solution {
+public:
+//optimal apprach 
+//find middle 
+//revrse the first half 
+//use slow and fast pointers
+    int pairSum(ListNode* head) {
+        ListNode* slow=head;
+        ListNode* fast=head;
+        //find the middle
+        while(fast && fast->next){
+            slow=slow->next;
+            fast=fast->next->next;
+        }//slow is our mid
+        //reverse the first half of the linked list
+        // Reverse first half of the linked list.
+        ListNode *nextNode, *prev = NULL;
+        ListNode *curr = head;
+        while (curr != slow) {
+            nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+
+        head = prev;
+
+    int maximumSum = 0;
+    ListNode* start = head;
+    while (slow) {
+        maximumSum = max(maximumSum, start->val + slow->val);
+        slow = slow->next;
+        start = start->next;
+    }
+
+    return maximumSum;
+        
+    }
+    
+    
+    
