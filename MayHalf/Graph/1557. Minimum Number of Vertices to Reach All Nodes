@@ -1,1 +1,18 @@
 
+class Solution {
+public:
+// TC(O(n+e))
+// sc((O(n)))
+// If a vertex doesn't have any edge that ends on it, this implies there is no way to reach it from any other vertex. The only way to cover these vertices is to include them in the set. Hence, all vertices that have no in-coming edge or have the in-degree as 0 will be included in the answer.
+    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+        vector<int> ans;
+        vector<int> visited(n,0);
+        for(auto edge:edges){
+            visited[edge[1]]=1;
+        }
+        for(int i=0;i<n;i++){
+            if(visited[i]==0) ans.push_back(i);
+        }
+        return ans;
+    }
+};
