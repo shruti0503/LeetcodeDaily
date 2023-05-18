@@ -1,0 +1,36 @@
+BRUTLY DONE :p WE ARE ASKED TO SWAP NODES ITSELF NOT THE VAL
+BUT DONE BY SWAPPING NODES ; THEN OPTIMISE IT 
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* temp=head;
+        if(head==NULL || head->next==NULL) return head;
+        while(temp!=NULL && temp->next!=NULL){
+           
+
+                  swap(temp->val,temp->next->val);
+//NOTE THAT THE SWAPPING CAN ONLY BE DONE WITH VAL'S AND NOT WITH THE NODES
+            
+          
+            temp=temp->next->next;
+        }
+        return head;
+        
+    }
+};
+
+//BUT GOAL ID TO SWAP THE COMPLET NODES
+
+ ListNode* swapPairs(ListNode* head) {
+        if(head==NULL || head->next==NULL) return head;
+        //do one case rest recursion will handle 
+        // the next pair will start from 
+        ListNode* np=head->next->next;
+        ListNode* newHead=head->next;
+        //swap recursively
+        newHead->next=head;
+        head->next=swapPairs(np);
+
+        return newHead;
+        
+    }
