@@ -1,0 +1,33 @@
+
+class Solution {
+public:
+// TC(O(n+e))
+// sc((O(n)))
+// If a vertex doesn't have any edge that ends on it, this implies there is no way to reach it from any other vertex. The only way to cover these vertices is to include them in the set. Hence, all vertices that have no in-coming edge or have the in-degree as 0 will be included in the answer.
+    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+        vector<int> ans;
+        vector<int> visited(n,0);
+        for(auto edge:edges){
+            visited[edge[1]]=1;
+        }
+        for(int i=0;i<n;i++){
+            if(visited[i]==0) ans.push_back(i);
+        }
+        return ans;
+    }
+};
+The time and space complexity of the given solution are as follows:
+
+Time Complexity:
+- Constructing the graph takes O(N), where N is the number of equations.
+- Evaluating each query requires a depth-first search (DFS) traversal of the graph. In the worst case, the DFS can visit all the nodes in the graph, resulting in a time complexity of O(N).
+- Therefore, the overall time complexity is O(N + Q*N), where Q is the number of queries.
+
+Space Complexity:
+- The space complexity is determined by the size of the graph and the visited set used during DFS.
+- Constructing the graph requires storing the division values for each variable pair, resulting in a space complexity of O(N), where N is the number of equations.
+- During DFS, the visited set stores the visited variables, which can have a maximum size of N in the worst case. Therefore, the space complexity of the visited set is O(N).
+- Additionally, the space required to store the results vector is O(Q), where Q is the number of queries.
+- Hence, the overall space complexity is O(N + Q).
+
+In summary, the time complexity is O(N + Q*N), and the space complexity is O(N + Q), where N is the number of equations and Q is the number of queries.

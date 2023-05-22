@@ -1,0 +1,53 @@
+class Solution {
+public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        //making the graph
+        unordered_map<string,unordered_map<string,double>>graph;
+        //traversing in the equations
+        for(int i=0;i<equations.size();i++){
+            string A=equations[i][0];
+            string B=equations[i][1];
+            double val=values[i];
+
+            graph[A][B]=val;
+            graph[B][A]=1.0/val;
+        }
+        vector<double>values2;
+        //values corresponding to queries
+        for(auto query: queries){
+            string C=query[0];
+            string D=query[1];
+            //if any of the node C or D is not already present in the graph
+            //means it is not connected to any
+            //so simply push back -1.0
+            if(!graph.count(C)|| !graph.count(D)){
+                values2.push_back(-1.0);
+                continue;
+            }
+            unordered_set<string> vis;
+            double val=dfs(C,D,graph,vis);
+            values2.push_back(val);
+        }
+        return values2;
+        
+    }
+
+
+    double dfs(string startNode, string endNode, unordered_map<string,unordered_map<string,double>>&graph,  unordered_set<string>& vis){
+        if(startNode==endNode) return 1.0; //means reached the target value
+
+        vis.insert(startNode);
+        //traverse to adj node
+        //to retrieve the neighbours of the start variables
+        //where each Key represents the neighbour variable and the 'value' -> division b/w 'start variable' 
+        for(auto adj : graph[startNode]){
+
+            if(vis.count(adj.first)) continue;
+
+            double val=dfs(adj.first,endNode,graph,vis);
+            if(val!=-1.0) return adj.second*val;
+
+        }
+        return -1.0;
+    }
+};
