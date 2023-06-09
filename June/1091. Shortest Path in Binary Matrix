@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        const int n=grid.size();
+        if(grid.size()==1 && grid[0][0]==0){
+            return 1;
+        }
+        if(grid[0][0]==1 || grid.back().back()==1){
+            return -1;
+        }
+        vector<vector<int>>dist(n,vector<int>(n,1e9));
+        queue<pair<int,pair<int,int>>>q;
+        q.push({1,{0,0}});
+        dist[0][0]=0;
+        int delr[8]={-1,-1,0,1,1,1,0,-1};
+        int delcol[8]={0,1,1,1,0,-1,-1,-1};
+        while(!q.empty()){
+            int dis=q.front().first;
+            int r=q.front().second.first;
+            int c=q.front().second.second;
+            q.pop();
+            for(int i=0;i<8;i++){
+                int nrow=r+delr[i];
+                int ncol=c+delcol[i];
+                //now check for validity
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<n && grid[nrow][ncol]==0 && dis+1<dist[nrow][ncol]){
+                    dist[nrow][ncol]=dis+1;
+                    if(nrow==n-1 && ncol==n-1){
+                        return dist[nrow][ncol];
+                    }
+                    q.push({1+dis,{nrow,ncol}});
+                }
+            }
+        }
+        return -1;
+
+        
+    }
+};
