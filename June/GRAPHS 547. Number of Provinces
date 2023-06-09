@@ -1,0 +1,28 @@
+class Solution {
+public:
+void dfs(int node,vector<vector<int>>& mat,vector<int>&vis,int n){
+    vis[node]=1;
+    for(int i=0;i<n;i++){
+        if(mat[node][i]==1 && !vis[i]){
+            dfs(i,mat,vis,n);
+        }
+    }
+}
+    int findCircleNum(vector<vector<int>>& M) {
+        int n=M.size();//to return size of the matrix
+        if(n==0){
+            return 0;
+        }
+        int ans=0;
+        vector<int>vis(n,0);
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                dfs(i,M,vis,n);
+                ans++;
+            }
+
+        }
+        return ans;
+        
+    }
+};
