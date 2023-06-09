@@ -1,0 +1,35 @@
+class MyHashSet {
+public:
+vector<int> m;
+ int size;
+    MyHashSet() {
+        size=1e6+1;
+        m.resize(size);
+       
+        
+    }
+    
+    void add(int key) {
+        m[key]=1;
+        
+    }
+    
+    void remove(int key) {
+        m[key]=0;
+        
+    }
+    
+    bool contains(int key) {
+        return m[key];
+        
+    }
+    // , the time complexity for adding, removing, and checking the existence of a key in the MyHashSet object is O(1), as the operations directly access the element at the given key in the vector. The space complexity is O(n) due to the storage required for the vector m, where n is the size of the vector (in this case, 1e6+1).
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
