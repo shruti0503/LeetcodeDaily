@@ -1,0 +1,29 @@
+class Solution {
+public:
+  void func(string digits,string curr, int ind, string mapp[], vector<string>& ans){
+     
+      if(ind>=digits.size()){
+          ans.push_back(curr);
+          return ;
+      }
+      int digit=digits[ind]-'0';
+      string val=mapp[digit];
+      
+      for(int i=0;i<val.size();i++){
+          curr.push_back(val[i]);
+          func(digits,curr, ind+1, mapp, ans);
+          curr.pop_back();
+      }
+
+
+  }
+    vector<string> letterCombinations(string digits) {
+        string mapping[10]={"","","abc", "def", "ghi", "jkl","mno","pqrs","tuv","wxyz"};
+        vector<string> ans;
+        if(digits.size()==0){
+            return ans;
+        }
+        func(digits,"",0, mapping, ans);
+        return ans;
+    }
+};
