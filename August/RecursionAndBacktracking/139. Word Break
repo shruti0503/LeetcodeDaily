@@ -1,0 +1,119 @@
+class Solution {
+public:
+bool func(string s, unordered_set<string>st){
+    //if the string is empty return true
+    if(s.empty()){
+        return true;
+    }
+    // now check for every substring in the string s if it is present in the set
+    // run a loop
+    for(int i=1;i<=s.length();i++){
+        // form the substr
+        //from that particular index to
+        // all the possible substrings that can be formed
+
+        //applepenapple
+        //i=1
+        // subtring  (a)  (substring from index 0 to i-1) and check if it exists in the wordSet.
+        //If the prefix s.substr(0, i) exists in the wordSet, it means that we can use this prefix as a word from the dictionary. 
+        //So, we make a recursive call to canSegment with the remaining part of the string after this prefix, i.e., s.substr(i).
+//The recursive call for s.substr(i) will continue the same process of checking all possible prefixes and their respective remaining parts.
+        string substring=s.substr(0,i);
+        // call for a
+        if(st.count(substring) &&  func(s.substr(i), st)){
+            return true;
+        }
+    }
+    return false;
+
+}
+    bool wordBreak(string s, vector<string>& wordDict) {
+        // push the wordduct in a set
+        unordered_set<string> st(wordDict.begin(), wordDict.end());
+        return func(s, st);
+
+        
+    }
+};
+
+Input: s = "leetcode"
+       wordDict = ["leet", "code"]
+
+                leetcode
+            /           \
+       leet code      eetcode
+                     /       \
+              eet code     etcode
+                        /       \
+                   et code     tcode
+                              /     \
+                         t code     code
+                                   /    \
+                              c ode    co de
+                                      /   \
+                                    c o de
+                                    / \
+                                  c o d e
+
+Here's how the recursive tree is formed for this example:
+
+The initial call is made with the input string "leetcode".
+At the first level of recursion, we consider the prefix "l" and the prefix "le". We find that "le" exists in the word dictionary, so we make a recursive call with the remaining string "etcode".
+At the second level of recursion, we consider the prefix "e" and the prefix "et". We find that "et" exists in the word dictionary, so we make a recursive call with the remaining string "code".
+At the third level of recursion, we consider the prefix "c" and the prefix "co". We find that "co" exists in the word dictionary, so we make a recursive call with the remaining string "de".
+At the fourth level of recursion, we consider the prefix "d" and the prefix "de". We find that "de" exists in the word dictionary, so we make a recursive call with the remaining string " " (empty string).
+The recursion continues until we reach the base case with an empty string. At this point, the function returns true (as an empty string can always be segmented).
+The recursive calls return true for all prefixes, leading to the final result that "leetcode" can be segmented into "leet code".
+Keep in mind that this recursive tree represents all possible combinations of prefixes and their remaining parts that are checked during the recursion. 
+The memoization technique helps to avoid redundant computations and prunes parts of the tree that are revisited with the same prefix.
+
+MEMORISATION
+class Solution {
+public:
+    // Recursive function to check if the string can be segmented using words from the dictionary
+    bool func(int ind, string s, unordered_set<string> st, vector<int>& dp) {
+        // Base case: If the index reaches the end of the string, return true.
+        if (ind == s.length()) {
+            return true;
+        }
+
+        // If the result for the current index `ind` is already calculated, return it.
+        if (dp[ind] != -1) {
+            return dp[ind];
+        }
+
+        // Otherwise, iterate through all possible substrings starting from the current index `ind`.
+        for (int i = ind; i < s.length(); i++) {
+            // Get the substring `s.substr(ind, i - ind + 1)` starting from index `ind` up to `i`.
+            string substring = s.substr(ind, i - ind + 1);
+
+            // Check if the substring exists in the wordSet and make a recursive call
+            // with the next index (i+1) and the remaining part of the string `s`.
+            if (st.count(substring) && func(i + 1, s, st, dp)) {
+                dp[ind] = true; // Memoize the result for the current index `ind`.
+                return true;
+            }
+        }
+
+        dp[ind] = false; // Memoize the result for the current index `ind`.
+        return false;
+    }
+
+    // Main function to check if the input string `s` can be segmented using words from the dictionary.
+    bool wordBreak(string s, vector<string>& wordDict) {
+        vector<int> dp(s.length(), -1); // Initialize memoization table with -1 (not calculated).
+        unordered_set<string> st(wordDict.begin(), wordDict.end()); // Convert wordDict to an unordered set for faster lookup.
+        return func(0, s, st, dp); // Call the recursive function starting from index 0.
+    }
+};
+
+//string substring = s.substr(ind, i - ind + 1);
+// The substr function in C++ takes two arguments: the starting index (indicated by ind) and the length of the substring. It does not take an ending index.
+
+// To extract the substring starting at index ind and ending at index i, you need to compute the length of the substring, which is (i - ind). However, since the second argument of substr is the length of the substring, not the ending index, you need to add 1 to the computed length to ensure that the character at index i is included in the substring.
+
+// For example, consider the string "applepenapple". Suppose we are at index ind=0 and i=4. Then, substring = s.substr(0, 4 - 0 + 1), which gives us "apple".
+
+// This adjustment is necessary to ensure that the correct substring is extracted from the original string s.
+
+
