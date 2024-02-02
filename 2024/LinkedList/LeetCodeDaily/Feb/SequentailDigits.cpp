@@ -4,7 +4,6 @@
 #include <algorithm>
 
 using namespace std;
-
 vector<int> sequentialDigits(int low, int high) {
     vector<int> result;
     for (int num = low; num <= high; ++num) {
