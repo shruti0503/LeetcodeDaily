@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/shrutivishwakarma/Documents/GitHub/LeetcodeDaily/2024/LinkedList",
-      "program": "/Users/shrutivishwakarma/Documents/GitHub/LeetcodeDaily/2024/LinkedList/build/Debug/outDebug"
+      "cwd": "/Users/shrutivishwakarma/Documents/GitHub/LeetcodeDaily/2024/Feb",
+      "program": "/Users/shrutivishwakarma/Documents/GitHub/LeetcodeDaily/2024/Feb/build/Debug/outDebug"
     }
   ]
 }
